@@ -1,14 +1,14 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { useEffect, useRef } from 'react';
-import { INatsukiStart } from '../@types/natsuki';
+import { Draggable } from '../@types/unit';
 import { onEnd, onMove, onPreStart, onStart } from './store/features/unit';
 import { useUnitDispatch, useUnitSelector } from './store/hooks';
 import ImageStatus from './utils/image';
-import { move, normal, stop, cat } from './utils/assets';
+import { cat } from './utils/assets';
 import { suspend } from './utils/suspend';
 import { ImageMouseEvent, ImageTouchEvent } from '../@types/event';
 
-function Natsuki() {
+const Unit = function Unit() {
   const dispatch = useUnitDispatch();
   const selector = useUnitSelector((state) => state.unit);
   const ref = useRef<HTMLImageElement>(null);
@@ -31,7 +31,7 @@ function Natsuki() {
     };
   }, [selector, dispatch]);
 
-  const handleStart = (event: INatsukiStart) => {
+  const handleStart = (event: Draggable) => {
     const { pageX, pageY, clientX, clientY } = event;
     if (!ref.current) {
       return;
@@ -79,6 +79,6 @@ function Natsuki() {
       onTouchEnd={handleTouchEnd}
     />
   );
-}
+};
 
-export default Natsuki;
+export default Unit;

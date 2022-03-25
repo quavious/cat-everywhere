@@ -3,33 +3,26 @@ import { faFileArrowUp, faMapLocationDot } from '@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { ChangeEvent, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import Natsuki from './Natsuki';
+import Unit from './Unit';
 
 import background from '../public/background-default.jpg';
+import { convertFileToBuffer } from './utils/image';
 
 function Main() {
   const bgRef = useRef<HTMLDivElement>(null);
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    const { files } = e.target;
-    if (!files) return;
-    const file = files[0];
-    const ext = file.name.split('.').pop();
-    if (!ext) return;
-
     try {
-      const buf = await file.arrayBuffer();
-
-      let bin = '';
-      const array = new Uint8Array(buf);
-      array.forEach((el) => {
-        bin += String.fromCharCode(el);
-      });
+      const resp = await convertFileToBuffer(e.target.files);
+      if (!resp) return;
+      const [ext, bin] = resp;
       const b64 = `data:image/${ext};base64,${window.btoa(bin)}`;
       if (!bgRef.current) return;
       bgRef.current.style.background = `url(${b64}) center center / cover no-repeat`;
     } catch (err) {
-      console.log('error');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('error');
+      }
     }
   };
   return (
@@ -40,7 +33,7 @@ function Main() {
       }}
       className="w-full h-screen"
     >
-      <Natsuki />
+      <Unit />
       <label
         htmlFor="background"
         className="fixed bottom-4 left-8 flex items-center bg-red-500 px-2 py-2 rounded cursor-pointer"

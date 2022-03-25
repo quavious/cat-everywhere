@@ -22,5 +22,12 @@ module.exports = {
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': 'error',
     'no-unused-vars': 'warn',
+    // 'react/function-component-definition': [
+    //   2,
+    //   {
+    //     namedComponents: 'arrow-function' || 'function-expression' || 'function-declaration',
+    //     unnamedComponents: 'arrow-function',
+    //   },
+    // ],
   },
 };
