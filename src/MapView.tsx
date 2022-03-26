@@ -167,7 +167,7 @@ const Map: FunctionComponent<MapProps> = function Map({
               }}
               className="cursor-pointer"
             />
-            <h2 className="hidden md:flex ml-2 whitespace-nowrap">Natsuki Everywhere</h2>
+            <h2 className="hidden md:flex ml-2 whitespace-nowrap">Cat Everywhere</h2>
           </div>
           {keyword.open && (
             <form className="w-full mx-4" onSubmit={handleSubmit}>
