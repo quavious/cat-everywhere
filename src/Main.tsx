@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { faFileArrowUp, faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faFileArrowUp, faMapLocationDot, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { ChangeEvent, useRef } from 'react';
 import { Link } from 'react-router-dom';
@@ -52,7 +52,7 @@ function Main() {
     >
       <Unit />
       <div className="fixed bottom-4 left-8 flex flex-col md:flex-row items-center">
-        <label htmlFor="background" className="bg-red-500 px-2 py-2 rounded cursor-pointer">
+        <label htmlFor="background" className="bg-red-500 flex align-center px-2 py-2 rounded cursor-pointer">
           <FontAwesomeIcon icon={faFileArrowUp} color="white" className="text-2xl" />
           <h5 className="hidden md:flex text-white font-bold ml-2">Change Background</h5>
         </label>
@@ -65,18 +65,14 @@ function Main() {
           multiple={false}
         />
 
-        <label htmlFor="background" className="bg-fuchsia-300	px-2 py-2 rounded cursor-pointer ml-2">
-          <FontAwesomeIcon icon={faFileArrowUp} color="white" className="text-2xl" />
+        <label
+          htmlFor="unit"
+          className="bg-pink-500 flex align-center px-2 py-2 mt-2 md:mt-0 rounded cursor-pointer md:ml-2"
+        >
+          <FontAwesomeIcon icon={faRotateRight} color="white" className="text-2xl" />
           <h5 className="hidden md:flex text-white font-bold ml-2">Switch Image</h5>
         </label>
-        <input
-          type="file"
-          id="background"
-          className="hidden"
-          accept="image/*"
-          onChange={handleChange}
-          multiple={false}
-        />
+        <input type="file" id="unit" className="hidden" accept="image/*" onChange={handleSwitch} multiple={false} />
       </div>
       <h5 className="fixed bottom-4 right-8 rounded bg-teal-500 px-2 py-2">
         <Link to="/map-view">
