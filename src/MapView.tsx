@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-undef */
 import { faCircleLeft, faMagnifyingGlass, faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,6 +11,7 @@ import React, {
   FormEvent,
   FunctionComponent,
   isValidElement,
+  MouseEvent,
   SetStateAction,
   useCallback,
   useEffect,
@@ -111,6 +114,11 @@ const Map: FunctionComponent<MapProps> = function Map({
     }
   }, [map, options]);
 
+  const handleClose = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setSelected((prev) => ({ ...prev, clicked: false }));
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!mapFetch || !innerCoord) {
@@ -199,17 +207,11 @@ const Map: FunctionComponent<MapProps> = function Map({
         return undefined;
       })}
       {selected.clicked && (
-        <div className="w-full h-full fixed top-0 left-0 right-0" style={{ zIndex: 700 }}>
-          <button
-            className="fixed top-6 right-6 bg-red-500 rounded-lg px-2 py-1"
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              setSelected((prev) => ({ ...prev, clicked: false }));
-            }}
-          >
-            <FontAwesomeIcon icon={faClose} color="white" className="fa-2xl" />
-          </button>
+        <div
+          className="w-full h-full fixed top-0 left-0 right-0 cursor-pointer"
+          style={{ zIndex: 700 }}
+          onClick={handleClose}
+        >
           <div
             className="w-full h-full"
             style={{

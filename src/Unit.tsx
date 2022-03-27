@@ -22,7 +22,6 @@ const Unit = function Unit() {
       dispatch(onMove({ pageX, pageY }));
     };
     document.ontouchmove = function fn(e) {
-      e.preventDefault();
       if (selector.exp !== ImageStatus.MOVE || e.touches.length < 1) {
         return;
       }
@@ -42,8 +41,6 @@ const Unit = function Unit() {
   };
 
   const handleEnd = async () => {
-    dispatch(onEnd({ exp: ImageStatus.STOP, image: cat }));
-    await suspend(2000);
     dispatch(onEnd({ exp: ImageStatus.NORMAL, image: cat }));
   };
   const handleMouseDown = (e: ImageMouseEvent) => {
@@ -51,7 +48,6 @@ const Unit = function Unit() {
     handleStart(e);
   };
   const handleTouchStart = (e: ImageTouchEvent) => {
-    e.preventDefault();
     if (e.touches.length < 1) {
       return;
     }
@@ -62,7 +58,6 @@ const Unit = function Unit() {
     await handleEnd();
   };
   const handleTouchEnd = async (e: ImageTouchEvent) => {
-    e.preventDefault();
     await handleEnd();
   };
   return (
