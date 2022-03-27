@@ -7,9 +7,12 @@ import Unit from './Unit';
 
 import background from '../public/background-default.jpg';
 import { convertFileToBuffer } from './utils/image';
+import { useUnitDispatch } from './store/hooks';
+import { onUnitChange } from './store/features/unit';
 
 function Main() {
   const bgRef = useRef<HTMLDivElement>(null);
+  const dispatch = useUnitDispatch();
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     try {
@@ -25,6 +28,20 @@ function Main() {
       }
     }
   };
+  const handleSwitch = async (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    try {
+      const resp = await convertFileToBuffer(e.target.files);
+      if (!resp) return;
+      const [ext, bin] = resp;
+      const b64 = `data:image/${ext};base64,${window.btoa(bin)}`;
+      dispatch(onUnitChange({ nextImage: b64 }));
+    } catch (err) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('error');
+      }
+    }
+  };
   return (
     <div
       ref={bgRef}
@@ -34,22 +51,33 @@ function Main() {
       className="w-full h-screen"
     >
       <Unit />
-      <label
-        htmlFor="background"
-        className="fixed bottom-4 left-8 flex items-center bg-red-500 px-2 py-2 rounded cursor-pointer"
-      >
-        <FontAwesomeIcon icon={faFileArrowUp} color="white" className="text-2xl" />
-        <h5 className="hidden md:flex text-white font-bold ml-2">Change Background</h5>
-      </label>
-      <input
-        type="file"
-        name=""
-        id="background"
-        className="hidden"
-        accept="image/*"
-        onChange={handleChange}
-        multiple={false}
-      />
+      <div className="fixed bottom-4 left-8 flex flex-col md:flex-row items-center">
+        <label htmlFor="background" className="bg-red-500 px-2 py-2 rounded cursor-pointer">
+          <FontAwesomeIcon icon={faFileArrowUp} color="white" className="text-2xl" />
+          <h5 className="hidden md:flex text-white font-bold ml-2">Change Background</h5>
+        </label>
+        <input
+          type="file"
+          id="background"
+          className="hidden"
+          accept="image/*"
+          onChange={handleChange}
+          multiple={false}
+        />
+
+        <label htmlFor="background" className="bg-fuchsia-300	px-2 py-2 rounded cursor-pointer ml-2">
+          <FontAwesomeIcon icon={faFileArrowUp} color="white" className="text-2xl" />
+          <h5 className="hidden md:flex text-white font-bold ml-2">Switch Image</h5>
+        </label>
+        <input
+          type="file"
+          id="background"
+          className="hidden"
+          accept="image/*"
+          onChange={handleChange}
+          multiple={false}
+        />
+      </div>
       <h5 className="fixed bottom-4 right-8 rounded bg-teal-500 px-2 py-2">
         <Link to="/map-view">
           <FontAwesomeIcon icon={faMapLocationDot} className="text-2xl" color="white" />

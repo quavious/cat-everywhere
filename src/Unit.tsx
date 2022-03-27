@@ -1,11 +1,10 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { useEffect, useRef } from 'react';
 import { Draggable } from '../@types/unit';
-import { onEnd, onMove, onPreStart, onStart } from './store/features/unit';
+import { onEnd, onMove, onPreStart, onStart, onUnitChange } from './store/features/unit';
 import { useUnitDispatch, useUnitSelector } from './store/hooks';
 import ImageStatus from './utils/image';
 import { cat } from './utils/assets';
-import { suspend } from './utils/suspend';
 import { ImageMouseEvent, ImageTouchEvent } from '../@types/event';
 
 const Unit = function Unit() {
@@ -63,6 +62,7 @@ const Unit = function Unit() {
   return (
     <img
       src={selector.image}
+      onError={() => dispatch(onUnitChange(cat))}
       ref={ref}
       alt="Natsuki"
       style={{ position: 'fixed', left: `${selector.coord[0]}px`, top: `${selector.coord[1]}px`, zIndex: 1000 }}

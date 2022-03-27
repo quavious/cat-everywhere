@@ -33,6 +33,10 @@ interface EndPayload {
   image: any;
 }
 
+interface UnitPayload {
+  nextImage: any;
+}
+
 const initialState: UnitState = {
   coord: [30, 30],
   offset: [30, 30],
@@ -51,7 +55,7 @@ export const unitSlice = createSlice({
     onStart: (state, action: PayloadAction<StartPayload>) => {
       const { pageX, pageY, exp, image } = action.payload;
       const { offset } = state;
-      return { ...state, image, coord: [pageX - offset[0], pageY - offset[1]], exp };
+      return { ...state, coord: [pageX - offset[0], pageY - offset[1]], exp };
     },
     onMove: (state, action: PayloadAction<MovePayload>) => {
       const { pageX, pageY } = action.payload;
@@ -60,15 +64,19 @@ export const unitSlice = createSlice({
     },
     onEnd: (state, action: PayloadAction<EndPayload>) => {
       const { exp, image } = action.payload;
-      return { ...state, exp, image };
+      return { ...state, exp };
     },
     onEndConfirm: (state, action: PayloadAction<EndPayload>) => {
       const { exp, image } = action.payload;
-      return { ...state, exp, image };
+      return { ...state, exp };
+    },
+    onUnitChange: (state, action: PayloadAction<UnitPayload>) => {
+      const { nextImage } = action.payload;
+      return { ...state, image: nextImage };
     },
   },
 });
 
-export const { onPreStart, onStart, onMove, onEnd, onEndConfirm } = unitSlice.actions;
+export const { onPreStart, onStart, onMove, onEnd, onEndConfirm, onUnitChange } = unitSlice.actions;
 
 export default unitSlice.reducer;
